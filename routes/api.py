@@ -10,8 +10,11 @@ import json
 from models.blog import Blog
 from models.comment import Comment
 from models.comment_reply import Reply
+from models.message import Message
 
 from routes.user import current_user
+from routes.message import send_c_msg
+from routes.message import send_r_msg
 
 # 创建一个 蓝图对象 并且路由定义在蓝图对象中
 # 然后在 flask 主代码中「注册蓝图」来使用
@@ -93,6 +96,7 @@ def dcount():
 @main.route('/comment', methods=['POST'])
 def comment():
     form = request.form
+    print('debug form, ', type(form),form)
     u = current_user()
     # t = Comment.query.filter_by(blog_id=t_id).first()
     t = Comment(form)
@@ -102,6 +106,8 @@ def comment():
     }
     if t.valid():
         t.save()
+        # 给blog.user发消息提醒
+        send_c_msg(u, t.blog.user, t.blog_id)
         r['success'] = True
         r['data'] = t.json()
     else:
@@ -122,10 +128,31 @@ def reply():
     }
     if t.valid():
         t.save()
+        # 给comment.user发消息提醒
+        send_r_msg(u, t.comment.user, t.comment.id, t.comment.blog_id)
         r['success'] = True
         r['data'] = t.json()
     else:
         r['success'] = False
         message = t.error_message()
         r['message'] = message
+    return json.dumps(r, ensure_ascii=False)
+
+
+# def change_status(id):
+#     w = Message.query.get(id)
+#     w.status = 1
+#     print('debug w, ', w.status, w.message)
+#     w.save()
+
+@main.route('/msg/<int:id>', methods=['GET'])
+def msg(id):
+    w = Message.query.get(id)
+    w.status = 1
+    print('debug w, ', w.status, w.message)
+    r = {
+        'data': []
+    }
+    w.save()
+    r['data'] = w.json()
     return json.dumps(r, ensure_ascii=False)

@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Msgs
+{% endblock %}
+
+{% block script %}
+    <script src="../../static/js/api.js"></script>
+    <script src="../../static/js/msg.js"></script>
+{% endblock %}
+
+{% block content %}
+{% for m in msgs %}
+    <span class="a-msgs-link" data-id={{ m.id }}>{{ m.message }}</span>
+{% endfor %}
+{% endblock %}

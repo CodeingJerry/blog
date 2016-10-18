@@ -16,6 +16,7 @@ class User(db.Model, ModelMixin):
     blogs = db.relationship('Blog', backref="user")
     comments = db.relationship('Comment', backref="user")
     replys = db.relationship('Reply', backref="user")
+    messages = db.relationship('Message', backref="user")
 
     def __init__(self, form):
         super(User, self).__init__()

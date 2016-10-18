@@ -29,6 +29,9 @@
             <div class="bbs-sidebar-0">
                 <a class="gua-nav-link" href="/user">注册登录</a>
                 <a class="gua-nav-link" href="/user/logout">登出</a>
+                {% if g.user %}
+                    <a href="{{ url_for('message.show', user_id=g.user.id) }}">{{ g.count }}</a>
+                {% endif %}
             </div>
             <div class="bbs-sidebar-0">
                 {% block sidebar %}

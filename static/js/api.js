@@ -106,4 +106,13 @@ api.commentReply = function(form, response) {
     api.post(url, form, response)
 }
 
+// 消息API
+api.msg = function(Id, response) {
+    // 删除一条微博
+    var url = '/api/msg/' + Id
+    log('url, ', url)
+    var form = {}
+    api.get(url, response)
+}
+
 // 用户 API

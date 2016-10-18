@@ -129,6 +129,8 @@ var bindEventCommentAdd = function() {
     $('#id-button-blog-comment').on('click', function(){
       // 得到点赞数并且生成 form 数据
       var blogId = $(this).parent().data('id');
+      //var user_id = $(this).parent().find("input[name=user_id]").val()
+      //var message = $(this).parent().find("input[name=message]").val()
       var temp = $(this).parent().find("textarea");
       var content = $(temp).val();
       var form = {

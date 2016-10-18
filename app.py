@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, g, render_template
 from flask_migrate import Migrate, MigrateCommand
 from flask_script import Manager
 
@@ -12,6 +12,9 @@ from models.user import User
 from models.blog import Blog
 from models.tag import Tag
 from models.comment import Comment
+from models.comment_reply import Reply
+from models.message import Message
+from routes.user import current_user
 
 from routes.todo import main as routes_todo
 from routes.blog import main as routes_blog
@@ -20,6 +23,7 @@ from routes.tag import main as routes_tag
 from routes.comment import main as routes_comment
 from routes.api import main as routes_api
 from routes.upload import main as routes_upload
+from routes.message import main as routes_message
 # from routes.admin_views import admin
 # from routes.chest_views import chest
 # from routes.question_views import question
@@ -43,12 +47,22 @@ def configure_app():
     app.register_blueprint(routes_comment, url_prefix='/comment')
     app.register_blueprint(routes_api, url_prefix='/api')
     app.register_blueprint(routes_upload, url_prefix='/upload')
+    app.register_blueprint(routes_message, url_prefix='/message')
     app.register_blueprint(routes_blog)
 
 
 def configured_app():
     configure_app()
     return app
+
+
+@app.before_request
+def before_request():
+    if current_user():
+        user = current_user()
+        count = Message.query.filter_by(status=0,user_id=user.id).count()
+        g.count = count
+        g.user = user
 
 
 # 自定义的命令行命令用来运行服务器

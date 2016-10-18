@@ -24,6 +24,7 @@ class Blog(db.Model, ModelMixin):
     updated_time = db.Column(db.Integer)
     # has relationship with comments 一对多关系(Comment是类名)
     comments = db.relationship('Comment', backref="blog")
+    messages = db.relationship('Message', backref="blog")
 
     # 多对多关系
     # tags = db.relationship('Tag', secondary=relationtable, backref="blogs")
