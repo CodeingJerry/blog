@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+
+{% block title %}
+    {{ blog.title }}
+{% endblock %}
+
+{% block script %}
+    <script src="./static/js/api.js"></script>
+    <script src="./static/js/event.js"></script>
+{% endblock %}
+
+{% block content %}
+    <div class="class-div-content">
+    <div class="">
+        <a href="{{url_for('tag.show', id=blog.tag_id)}}">{{ blog.tag.name }}</a>
+        {% if uid == 1 %}
+        <a href="{{ url_for('tag.edit', id=blog.tag_id) }}">
+            编辑
+        </a>
+        <a href="{{ url_for('tag.delete', id=blog.tag_id) }}">
+            删除
+        </a>
+        {% endif %}
+    </div>
+    <div data-id={{ blog.id }}>
+        <img src="{{ blog.user.avatar }}" width="50px" height="50px"><h1>标题：{{ blog.title }} 作者：{{ blog.user.username }}  时间：{{ blog.created_time }}</h1>
+        {% if uid == 1 %}
+        <a href="{{ url_for('.edit', id=blog.id) }}">
+            编辑
+        </a>
+        <a href="{{ url_for('.delete', id=blog.id) }}">
+            删除
+        </a>
+        {% endif %}
+        <p>
+            <a href="{{ url_for('.edit_pic', id=blog.id) }}"><img src="{{ blog.picture }}" width="150px" height="150px"></a>{{ blog.content}}
+        </p>
+        <span id="id-span-blog-add"><img src="./static/img/up.png"><span id="id-span-blog-upcount">{{ blog.upcount }}</span></span>
+        &nbsp;&nbsp;
+        <span id="id-span-blog-del"><img src="./static/img/down.png"><span id="id-span-blog-downcount">{{ blog.downcount }}</span></span>
+        &nbsp;&nbsp;
+        <span id="id-span-blog-comment">评论</span>
+    </div>
+    <div id="id-div-blog-comment" style="display: none" data-id={{ blog.id }}>
+        <!-- <input type="hidden" name="blog_id" value="{{ blog.id }}"> -->
+        <textarea name="content"></textarea>
+        <button id="id-button-blog-comment">发表评论</button>
+        <!-- </form> -->
+    </div>
+    <div class="bbs-comments">
+        {% for c in blog.comments %}
+        <div class="class-div-comment-reply">
+            <div>
+                用户名：{{ c.user.username }}  创建时间：{{ c.created_time }}  内容：{{ c.content }}
+                <span class="class-span-comment-reply">回复</span>
+            </div>
+            <div class="class-div-comment-reply" style="display: none" data-id={{ c.id }}>
+                <textarea name="content"></textarea>
+                <button class="class-button-comment-reply">发布</button>
+            </div>
+        </div>
+        <div class="bbs-replys">
+            {% for r in c.replys %}
+                <div>
+                <img src="{{ r.user.avatar }}" width="50px" height="50px">{{ r.user.username }}{{ r.created_time }}<br/>
+                {{ r.content }}
+                </div>
+            {% endfor %}
+        </div>
+        {% endfor %}
+    </div>
+    </div>
+
+
+{% endblock %}
+
+{% block sidebar %}
+    <h1>放置二维码 </h1>
+{% endblock %}
+{% block tag %}
+    {% for t in tag_list %}
+        <a href="{{ url_for('tag.show', id=t.id) }}"><h2>{{ t.name }}</h2></a>
+    {% endfor %}
+{% endblock %}

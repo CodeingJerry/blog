@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block title %}
+    tags
+{% endblock %}
+
+{% block content %}
+    <div>
+        <form action="{{ url_for('.add') }}" method="post">
+            <input type="text" name="name" placeholder="输入 name">
+            <button>Add</button>
+        </form>
+    </div>
+
+    {% for tag in tag_list %}
+    <div>
+        <a style="text-decoration: none" href="{{ url_for('tag.show', id=tag.id) }}">{{ tag.id }}:{{ tag.name }}</a>
+    </div>
+    {% if uid == 1 %}
+    <a style="text-decoration: none" href="{{ url_for('.edit', id=tag.id) }}">
+        更改
+    </a>
+    <a style="text-decoration: none" href="{{ url_for('.delete', id=tag.id) }}">
+        删除
+    </a>
+    {% endif %}
+    {% endfor %}
+{% endblock %}
+
+
+{% block sidebar %}
+    <h1>hello </h1>
+    {% if uid == 1 %}
+    <a href="{{ url_for('blog.new') }}">发布新帖子</a>
+    {% endif %}
+{% endblock %}
+

@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+
+{% block title %}
+    blogs
+{% endblock %}
+
+{% block content %}
+    {% if pagination %}
+        {% for b in pagination.items %}
+            <a href="{{ url_for('.show', id=b.id) }}"><h1>标题 {{ b.title }}</h1></a>
+            <h4> 作者: <a href="{{ url_for('user.show', id=b.user.id) }}"><img src="{{ b.user.avatar }}" width="50" height="50"></a> 标签: {{ b.tag.name }} 时间:{{ b.created_time }} {{ b.upcount }}人点赞</h4>
+            <p>内容 {{ b.content }}</p>
+        {% endfor %}
+        {% if pagination.has_prev %} {# 分页的前端展示 #}
+            <a href="{{ url_for('blog.index', page=pagination.prev_num) }}"><< 前一页</a>
+            {% else %}
+            << ...
+        {% endif %}
+        {% for i in range(total) %}
+            <a href="{{ url_for('blog.index', page=i + 1 ) }}">{{ i + 1 }}</a>
+        {% endfor %}
+        {% if pagination.has_next %}
+            <a href="{{ url_for('blog.index', page=pagination.next_num) }}">后一页 >></a>
+            {% else %}
+            ... >>
+        {% endif %}
+    {% else %}
+        <p style="color:blue;">the guy is so lazy.....</p>
+    {% endif %}
+{% endblock %}
+
+{% block sidebar %}
+    {% if uid == 1 %}
+    <a href="{{ url_for('.new') }}">
+        发布新文章
+    </a>
+    {% endif %}
+    <h1>放置二维码 </h1>
+{% endblock %}
+{% block tag %}
+    {% for t in tag_list %}
+        <a href="{{ url_for('tag.show', id=t.id) }}"><h2>{{ t.name }}</h2></a>
+        {% if uid == 1 %}
+            <a href="{{ url_for('tag.edit', id=t.id) }}">
+                更改
+            </a>
+            <a href="{{ url_for('tag.delete', id=t.id) }}">
+                删除
+            </a>
+        {% endif %}
+    {% endfor %}
+{% endblock %}

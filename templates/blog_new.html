@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block title %}
+    发帖
+{% endblock %}
+
+{% block content %}
+    <form action="{{ url_for('blog.add') }}" method="post">
+        <input type="text" name="tag_id" placeholder="输入 tag_id">
+        <br>
+        <input type="text" name="upcount" placeholder="输入初始点赞数">
+        <br>
+        <input type="text" name="title" placeholder="输入 title">
+        <br>
+        <textarea type="text" name="content" placeholder="输入 content"></textarea>
+        <br>
+        <button>Add</button>
+    </form>
+{% endblock %}
+
+
+{% block sidebar %}
+    <h1>hello </h1>
+    <a href="/tag/new">发布新标签</a>
+{% endblock %}
+{% block tag %}
+    {% for t in tag_list %}
+        <h2>{{ t.id }} {{ t.name }}</h2>
+    {% endfor %}
+{% endblock %}
+

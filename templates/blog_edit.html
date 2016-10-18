@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block title %}
+    编辑博客
+{% endblock %}
+
+{% block content %}
+    <div>
+        <form action="{{ url_for('.update', id=blog.id) }}" method="post">
+            <input type="text" name="tag_id" value="{{ blog.tag_id }}">
+            <input type="text" name="title" value="{{ blog.title }}">
+            <input type="text" name="abstract" value="{{ blog.abstract }}">
+            <input type="text" name="content" value="{{ blog.content }}">
+            <button>更新</button>
+        </form>
+    </div>
+{% endblock %}
+
+{% block sidebar %}
+    <h1>放置二维码 </h1>
+{% endblock %}
+
+{% block tag %}
+    {% for t in tag_list %}
+        <a href="{{ url_for('tag.show', id=t.id) }}"><h2>{{ t.id }} {{ t.name }}</h2></a>
+    {% endfor %}
+{% endblock %}

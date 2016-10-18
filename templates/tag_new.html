@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block title %}
+    添加标签
+{% endblock %}
+
+{% block content %}
+    <form action="{{ url_for('.add') }}" method="post">
+        <input type="text" name="name" placeholder="输入 name">
+        <button>Add</button>
+    </form>
+{% endblock %}
+
+
+{% block sidebar %}
+    <h1>hello </h1>
+    <a href="/new">发布新帖子</a>
+{% endblock %}
+
+
